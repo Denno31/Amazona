@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, Link, Route } from 'react-router-dom'
 import { signout } from './actions/userActions'
@@ -11,6 +12,7 @@ import ProductScreen from './Screens/ProductScreen'
 import RegisterScreen from './Screens/RegisterScreen'
 import ShippingAddressScreen from './Screens/ShippingAddressScreen'
 import SigninScreen from './Screens/SigninScreen'
+import ProfileScreen from './Screens/ProfileScreen'
 function App() {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
@@ -19,6 +21,9 @@ function App() {
   const signoutHandler = () => {
     dispatch(signout())
   }
+  useEffect(() => {
+    document.title = 'Jamia'
+  }, [])
   return (
     <BrowserRouter>
       <div className="grid-container">
@@ -42,9 +47,12 @@ function App() {
                 </Link>
                 <ul className="dropdown-content">
                   <li>
+                    <Link to="profile">User Profile</Link>
+                  </li>
+                  <li>
                     <Link to="/orderhistory">Order History</Link>
                   </li>
-                  <Link to="#signout" onClick={signoutHandler}>
+                  <Link to="#" onClick={signoutHandler}>
                     Sign Out
                   </Link>
                 </ul>
@@ -66,6 +74,7 @@ function App() {
           <Route exact path="/payment" component={PaymentMethodScreen} />
           <Route exact path="/placeorder" component={PlaceOrderScreen} />
           <Route exact path="/order/:id" component={OrderScreen} />
+          <Route exact path="/profile/" component={ProfileScreen} />
         </main>
         <footer className="rows center">All rights Reserverd</footer>
       </div>

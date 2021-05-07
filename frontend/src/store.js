@@ -12,7 +12,11 @@ import {
   productDetailsReducer,
   productListReducer,
 } from './reducers/productReducers'
-import { userRegisterReducer, userSigninReducer } from './reducers/userReducer'
+import {
+  userDetailsReducer,
+  userRegisterReducer,
+  userSigninReducer,
+} from './reducers/userReducer'
 const initialState = {
   userSignin: {
     userInfo: localStorage.getItem('userInfo')
@@ -40,6 +44,7 @@ const reducer = combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   orderMineList: orderMineListReducer,
+  userDetails: userDetailsReducer,
 })
 const store = createStore(
   reducer,

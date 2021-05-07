@@ -24,6 +24,7 @@ function RegisterScreen(props) {
     dispatch(register(name, email, password))
   }
   useEffect(() => {
+    console.log(userInfo)
     if (userInfo) {
       props.history.push(redirect)
     }
