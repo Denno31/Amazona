@@ -13,6 +13,7 @@ import RegisterScreen from './Screens/RegisterScreen'
 import ShippingAddressScreen from './Screens/ShippingAddressScreen'
 import SigninScreen from './Screens/SigninScreen'
 import ProfileScreen from './Screens/ProfileScreen'
+import PrivateRoute from './components/PrivateRoute'
 function App() {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
@@ -52,13 +53,36 @@ function App() {
                   <li>
                     <Link to="/orderhistory">Order History</Link>
                   </li>
-                  <Link to="#" onClick={signoutHandler}>
-                    Sign Out
-                  </Link>
+                  <li>
+                    <Link to="#" onClick={signoutHandler}>
+                      Sign Out
+                    </Link>
+                  </li>
                 </ul>
               </div>
             ) : (
               <Link to="/signin">Sign in</Link>
+            )}
+            {userInfo && userInfo.isAdmin && (
+              <div className="dropdown">
+                <Link to="#admin">
+                  Admin <i className="fa fa-caret-down"></i>
+                </Link>
+                <ul className="dropdown-content">
+                  <li>
+                    <Link to="/dashboard">Dashboard</Link>
+                  </li>
+                  <li>
+                    <Link to="/productlist">products</Link>
+                  </li>
+                  <li>
+                    <Link to="/orderlist">Order</Link>
+                  </li>
+                  <li>
+                    <Link to="/userlist">users</Link>
+                  </li>
+                </ul>
+              </div>
             )}
           </div>
         </header>
@@ -66,7 +90,11 @@ function App() {
           <Route exact path="/" component={HomeScreen} />
 
           <Route exact path="/cart/:id?" component={CartScreen} />
-          <Route exact path="/orderhistory" component={OrderHistoryScreen} />
+          <PrivateRoute
+            exact
+            path="/orderhistory"
+            component={OrderHistoryScreen}
+          />
           <Route exact path="/signin" component={SigninScreen} />
           <Route exact path="/register" component={RegisterScreen} />
           <Route exact path="/shipping" component={ShippingAddressScreen} />
@@ -74,7 +102,7 @@ function App() {
           <Route exact path="/payment" component={PaymentMethodScreen} />
           <Route exact path="/placeorder" component={PlaceOrderScreen} />
           <Route exact path="/order/:id" component={OrderScreen} />
-          <Route exact path="/profile/" component={ProfileScreen} />
+          <PrivateRoute exact path="/profile/" component={ProfileScreen} />
         </main>
         <footer className="rows center">All rights Reserverd</footer>
       </div>
