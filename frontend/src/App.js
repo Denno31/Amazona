@@ -1,30 +1,34 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter, Link, Route } from 'react-router-dom'
-import { signout } from './actions/userActions'
-import CartScreen from './Screens/CartScreen'
-import HomeScreen from './Screens/HomeScreen'
-import OrderHistoryScreen from './Screens/OrderHistoryScreen'
-import OrderScreen from './Screens/OrderScreen'
-import PaymentMethodScreen from './Screens/PaymentMethodScreen'
-import PlaceOrderScreen from './Screens/PlaceOrderScreen'
-import ProductScreen from './Screens/ProductScreen'
-import RegisterScreen from './Screens/RegisterScreen'
-import ShippingAddressScreen from './Screens/ShippingAddressScreen'
-import SigninScreen from './Screens/SigninScreen'
-import ProfileScreen from './Screens/ProfileScreen'
-import PrivateRoute from './components/PrivateRoute'
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Link, Route } from "react-router-dom";
+import { signout } from "./actions/userActions";
+import CartScreen from "./Screens/CartScreen";
+import HomeScreen from "./Screens/HomeScreen";
+import OrderHistoryScreen from "./Screens/OrderHistoryScreen";
+import OrderScreen from "./Screens/OrderScreen";
+import PaymentMethodScreen from "./Screens/PaymentMethodScreen";
+import PlaceOrderScreen from "./Screens/PlaceOrderScreen";
+import ProductScreen from "./Screens/ProductScreen";
+import RegisterScreen from "./Screens/RegisterScreen";
+import ShippingAddressScreen from "./Screens/ShippingAddressScreen";
+import SigninScreen from "./Screens/SigninScreen";
+import ProfileScreen from "./Screens/ProfileScreen";
+import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
+import ProductListScreen from "./Screens/ProductListScreen";
+import ProductEditScreen from "./Screens/ProductEditScreen";
+import OrderListScreen from "./Screens/OrderListScreen";
 function App() {
-  const cart = useSelector((state) => state.cart)
-  const { cartItems } = cart
-  const { userInfo } = useSelector((state) => state.userSignin)
-  const dispatch = useDispatch()
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
+  const { userInfo } = useSelector((state) => state.userSignin);
+  const dispatch = useDispatch();
   const signoutHandler = () => {
-    dispatch(signout())
-  }
+    dispatch(signout());
+  };
   useEffect(() => {
-    document.title = 'Jamia'
-  }, [])
+    document.title = "Jamia";
+  }, []);
   return (
     <BrowserRouter>
       <div className="grid-container">
@@ -48,7 +52,7 @@ function App() {
                 </Link>
                 <ul className="dropdown-content">
                   <li>
-                    <Link to="profile">User Profile</Link>
+                    <Link to="/profile">User Profile</Link>
                   </li>
                   <li>
                     <Link to="/orderhistory">Order History</Link>
@@ -102,12 +106,19 @@ function App() {
           <Route exact path="/payment" component={PaymentMethodScreen} />
           <Route exact path="/placeorder" component={PlaceOrderScreen} />
           <Route exact path="/order/:id" component={OrderScreen} />
-          <PrivateRoute exact path="/profile/" component={ProfileScreen} />
+          <PrivateRoute exact path="/profile" component={ProfileScreen} />
+          <AdminRoute exact path="/productlist" component={ProductListScreen} />
+          <AdminRoute exact path="/orderlist" component={OrderListScreen} />
+          <AdminRoute
+            exact
+            path="/product/:id/edit"
+            component={ProductEditScreen}
+          />
         </main>
         <footer className="rows center">All rights Reserverd</footer>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
