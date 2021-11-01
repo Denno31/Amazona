@@ -18,6 +18,8 @@ import AdminRoute from "./components/AdminRoute";
 import ProductListScreen from "./Screens/ProductListScreen";
 import ProductEditScreen from "./Screens/ProductEditScreen";
 import OrderListScreen from "./Screens/OrderListScreen";
+import UserListScreen from "./Screens/UserListScreen";
+import UserEditScreen from "./Screens/UserEditScreen";
 function App() {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -67,6 +69,27 @@ function App() {
             ) : (
               <Link to="/signin">Sign in</Link>
             )}
+            {userInfo && userInfo.isSeller && (
+              <div className="dropdown">
+                <Link to="#admin">
+                  Admin <i className="fa fa-caret-down"></i>
+                </Link>
+                <ul className="dropdown-content">
+                  <li>
+                    <Link to="/dashboard">Dashboard</Link>
+                  </li>
+                  <li>
+                    <Link to="/productlist">products</Link>
+                  </li>
+                  <li>
+                    <Link to="/orderlist">Order</Link>
+                  </li>
+                  <li>
+                    <Link to="/userlist">users</Link>
+                  </li>
+                </ul>
+              </div>
+            )}
             {userInfo && userInfo.isAdmin && (
               <div className="dropdown">
                 <Link to="#admin">
@@ -109,6 +132,8 @@ function App() {
           <PrivateRoute exact path="/profile" component={ProfileScreen} />
           <AdminRoute exact path="/productlist" component={ProductListScreen} />
           <AdminRoute exact path="/orderlist" component={OrderListScreen} />
+          <AdminRoute exact path="/userlist" component={UserListScreen} />
+          <AdminRoute exact path="/user/:id/edit" component={UserEditScreen} />
           <AdminRoute
             exact
             path="/product/:id/edit"
