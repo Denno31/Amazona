@@ -20,6 +20,7 @@ import ProductEditScreen from "./Screens/ProductEditScreen";
 import OrderListScreen from "./Screens/OrderListScreen";
 import UserListScreen from "./Screens/UserListScreen";
 import UserEditScreen from "./Screens/UserEditScreen";
+import SellerRoute from "./components/AdminRoute";
 function App() {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -72,20 +73,14 @@ function App() {
             {userInfo && userInfo.isSeller && (
               <div className="dropdown">
                 <Link to="#admin">
-                  Admin <i className="fa fa-caret-down"></i>
+                  Seller <i className="fa fa-caret-down"></i>
                 </Link>
                 <ul className="dropdown-content">
                   <li>
-                    <Link to="/dashboard">Dashboard</Link>
+                    <Link to="/productlist/seller">products</Link>
                   </li>
                   <li>
-                    <Link to="/productlist">products</Link>
-                  </li>
-                  <li>
-                    <Link to="/orderlist">Order</Link>
-                  </li>
-                  <li>
-                    <Link to="/userlist">users</Link>
+                    <Link to="/orderlist/seller">orders</Link>
                   </li>
                 </ul>
               </div>
@@ -133,7 +128,18 @@ function App() {
           <AdminRoute exact path="/productlist" component={ProductListScreen} />
           <AdminRoute exact path="/orderlist" component={OrderListScreen} />
           <AdminRoute exact path="/userlist" component={UserListScreen} />
+          <SellerRoute
+            exact
+            path="/productlist/seller"
+            component={ProductListScreen}
+          />
+          <SellerRoute
+            exact
+            path="/orderlist/seller"
+            component={OrderListScreen}
+          />
           <AdminRoute exact path="/user/:id/edit" component={UserEditScreen} />
+
           <AdminRoute
             exact
             path="/product/:id/edit"

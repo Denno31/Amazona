@@ -13,6 +13,7 @@ import {
 } from "../constants/productConstants";
 
 export default function ProductListScreen(props) {
+  const sellerMode = props.match.path.indexOf("/seller") >= 0;
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
   const dispatch = useDispatch();
@@ -29,16 +30,26 @@ export default function ProductListScreen(props) {
     success: successCreate,
     product: createdProduct,
   } = productCreate;
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   useEffect(() => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
-      props.history.push(`product/${createdProduct._id}/edit`);
+      props.history.push(`/product/${createdProduct._id}/edit`);
     }
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
-    dispatch(listProducts());
-  }, [dispatch, createdProduct, props.history, successCreate, successDelete]);
+    dispatch(listProducts({ seller: sellerMode ? userInfo._id : "" }));
+  }, [
+    dispatch,
+    createdProduct,
+    props.history,
+    successCreate,
+    successDelete,
+    sellerMode,
+    userInfo._id,
+  ]);
 
   const deleteHandler = (product) => {
     if (window.confirm("Are you sure?")) {
@@ -90,7 +101,7 @@ export default function ProductListScreen(props) {
                     type="button"
                     className="small"
                     onClick={() => {
-                      props.history.push(`product/${product._id}/edit`);
+                      props.history.push(`/product/${product._id}/edit`);
                     }}
                   >
                     Edit

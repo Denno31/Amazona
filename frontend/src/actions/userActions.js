@@ -91,6 +91,7 @@ export const detailsUser = (userId) => async (dispatch, getState) => {
   }
 };
 export const updateUserProfile = (user) => async (dispatch, getState) => {
+  console.log(user);
   dispatch({ type: USER_UPDATE_PROFILE_REQUEST, payload: user });
   const {
     userSignin: { userInfo },

@@ -16,20 +16,22 @@ import {
   PRODUCT_UPDATE_SUCCESS,
 } from "../constants/productConstants";
 import axios from "axios";
-export const listProducts = () => async (dispatch) => {
-  dispatch({
-    type: PRODUCT_LIST_REQUEST,
-  });
-  try {
-    const { data } = await axios.get("/api/products");
+export const listProducts =
+  ({ seller = "" }) =>
+  async (dispatch) => {
     dispatch({
-      type: PRODUCT_LIST_SUCCESS,
-      payload: data,
+      type: PRODUCT_LIST_REQUEST,
     });
-  } catch (error) {
-    dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
-  }
-};
+    try {
+      const { data } = await axios.get(`/api/products?seller=${seller}`);
+      dispatch({
+        type: PRODUCT_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
+    }
+  };
 export const detailsProduct = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
