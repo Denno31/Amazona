@@ -1,30 +1,31 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { addToCart, removeFromCart } from '../actions/cartActions'
-import MessageBox from '../components/MessageBox'
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { addToCart, removeFromCart } from "../actions/cartActions";
+import MessageBox from "../components/MessageBox";
 
 function CartScreen(props) {
-  const dispatch = useDispatch()
-  const productId = props.match.params.id
+  const dispatch = useDispatch();
+  const productId = props.match.params.id;
   const qty = props.location.search
-    ? Number(props.location.search.split('=')[1])
-    : 1
-  const { cartItems } = useSelector((state) => state.cart)
+    ? Number(props.location.search.split("=")[1])
+    : 1;
+  const { cartItems, error } = useSelector((state) => state.cart);
   useEffect(() => {
     if (productId) {
-      dispatch(addToCart(productId, qty))
+      dispatch(addToCart(productId, qty));
     }
-  }, [])
+  }, [dispatch, productId, qty]);
   const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id))
-  }
+    dispatch(removeFromCart(id));
+  };
   const checkoutHandler = () => {
-    props.history.push('/signin?redirect=shipping')
-  }
+    props.history.push("/signin?redirect=shipping");
+  };
   return (
     <div className="rows top">
       <div className="col-2">
+        {error && <MessageBox variant="danger">{error}</MessageBox>}
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
           <MessageBox>
@@ -46,7 +47,7 @@ function CartScreen(props) {
                       value={item.qty}
                       onChange={(e) =>
                         dispatch(
-                          addToCart(item.product, Number(e.target.value)),
+                          addToCart(item.product, Number(e.target.value))
                         )
                       }
                     >
@@ -77,7 +78,7 @@ function CartScreen(props) {
           <ul>
             <li>
               <h2>
-                Subtotal ({cartItems.reduce((acc, curr) => acc + curr.qty, 0)}{' '}
+                Subtotal ({cartItems.reduce((acc, curr) => acc + curr.qty, 0)}{" "}
                 items): ${cartItems.reduce((a, c) => a + c.qty * c.price, 0)}
               </h2>
             </li>
@@ -95,7 +96,7 @@ function CartScreen(props) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default CartScreen
+export default CartScreen;

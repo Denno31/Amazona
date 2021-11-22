@@ -26,6 +26,7 @@ import {
   userListReducer,
   userRegisterReducer,
   userSigninReducer,
+  userTopSellerListReducer,
 } from "./reducers/userReducer";
 const initialState = {
   userSignin: {
@@ -65,6 +66,7 @@ const reducer = combineReducers({
   userList: userListReducer,
   userDelete: userDeleteReducer,
   updateUser: updateUserReducer,
+  userTopSellerList: userTopSellerListReducer,
 });
 const store = createStore(
   reducer,

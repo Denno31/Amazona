@@ -12,7 +12,10 @@ productRouter.get(
     const seller = req.query.seller || "";
     const sellerFilter = seller ? { seller } : {};
 
-    const products = await Product.find({ ...sellerFilter });
+    const products = await Product.find({ ...sellerFilter }).populate(
+      "seller",
+      "seller.name seller.logo"
+    );
     res.send(products);
   })
 );
@@ -29,7 +32,11 @@ productRouter.get(
 productRouter.get(
   "/:id",
   expressAsyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate(
+      "seller",
+      "seller.name seller.rating seller.logo seller.numReviews"
+    );
+    console.log(product);
     if (product) {
       return res.send(product);
     } else {

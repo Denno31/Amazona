@@ -6,6 +6,7 @@ export const generateToken = (user) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      isSeller:user.isSeller 
     },
     process.env.JWT_SECRET || "secre",
     {
@@ -45,7 +46,8 @@ export const isSeller = (req, res, next) => {
   }
 };
 export const isSellerOrAdmin = (req, res, next) => {
-  if (req.user && (req.user.isAdmin || req.user.seller)) {
+  console.log("from create", req.user);
+  if (req.user && (req.user.isAdmin || req.user.isSeller)) {
     next();
   } else {
     res.status(401).send({ message: "Invalid Admin/seller Token" });

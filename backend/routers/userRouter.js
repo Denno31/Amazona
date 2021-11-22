@@ -6,7 +6,15 @@ import bcrypt from "bcryptjs";
 import { generateToken, isAdmin, isAuth } from "../utils.js";
 
 const userRouter = express.Router();
-
+userRouter.get(
+  "/top-sellers",
+  expressAsyncHandler(async (req, res) => {
+    const topSeller = await User.find({ isSeller: true })
+      .sort({ "seller.rating": -1 })
+      .limit(3);
+    res.send(topSeller);
+  })
+);
 userRouter.get(
   "/seed",
   expressAsyncHandler(async (req, res) => {
@@ -48,6 +56,7 @@ userRouter.post(
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      isSeller: user.isSeller,
       token: generateToken(user),
     });
   })
