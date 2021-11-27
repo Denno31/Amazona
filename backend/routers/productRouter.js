@@ -9,13 +9,16 @@ const productRouter = express.Router();
 productRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
+    //console.log(req.query.name);
+    const name = req.query.name || "";
     const seller = req.query.seller || "";
+    const nameFilter = name ? { name: { $regex: name, $options: "i" } } : {};
     const sellerFilter = seller ? { seller } : {};
 
-    const products = await Product.find({ ...sellerFilter }).populate(
-      "seller",
-      "seller.name seller.logo"
-    );
+    const products = await Product.find({
+      ...sellerFilter,
+      ...nameFilter,
+    }).populate("seller", "seller.name seller.logo");
     res.send(products);
   })
 );
@@ -36,7 +39,6 @@ productRouter.get(
       "seller",
       "seller.name seller.rating seller.logo seller.numReviews"
     );
-    console.log(product);
     if (product) {
       return res.send(product);
     } else {

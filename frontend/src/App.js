@@ -22,6 +22,8 @@ import UserListScreen from "./Screens/UserListScreen";
 import UserEditScreen from "./Screens/UserEditScreen";
 import SellerRoute from "./components/AdminRoute";
 import SellerScreen from "./Screens/SellerScreen";
+import SearchBox from "./components/SearchBox";
+import SearchScreen from "./Screens/SearchScreen";
 function App() {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -41,6 +43,13 @@ function App() {
             <Link to="/" className="brand">
               Jamia
             </Link>
+          </div>
+          <div>
+            <Route
+              render={({ history }) => (
+                <SearchBox history={history}></SearchBox>
+              )}
+            ></Route>
           </div>
           <div>
             <Link to="/cart">
@@ -130,6 +139,7 @@ function App() {
           <AdminRoute exact path="/productlist" component={ProductListScreen} />
           <AdminRoute exact path="/orderlist" component={OrderListScreen} />
           <AdminRoute exact path="/userlist" component={UserListScreen} />
+          <Route path="/search/name/:name?" exact component={SearchScreen} />
           <SellerRoute
             exact
             path="/productlist/seller"
