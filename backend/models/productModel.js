@@ -11,6 +11,7 @@ const productSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     countInStock: { type: Number, default: 0 },
     numReviews: { type: Number, required: true },
+    rating: { type: Number, default: 0 },
   },
   {
     timestamps: true,

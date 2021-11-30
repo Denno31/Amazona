@@ -193,10 +193,16 @@ function App() {
             component={SearchScreen}
           />
           <Route
-            path="/search/category/:category/name/:name?"
+            path="/search/category/:category/name/:name"
             exact
             component={SearchScreen}
           />
+          <Route
+            path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order"
+            exact
+            component={SearchScreen}
+          />
+
           <SellerRoute
             exact
             path="/productlist/seller"
