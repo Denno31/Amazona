@@ -27,6 +27,8 @@ import SearchScreen from "./Screens/SearchScreen";
 import { listProductCategories } from "./actions/productActions";
 import MessageBox from "./components/MessageBox";
 import LoadingBox from "./components/LoadingBox";
+import MapScreen from "./Screens/MapScreen";
+import DashboadScreen from "./Screens/DashBoardScreen";
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const cart = useSelector((state) => state.cart);
@@ -183,8 +185,15 @@ function App() {
           <Route exact path="/placeorder" component={PlaceOrderScreen} />
           <Route exact path="/order/:id" component={OrderScreen} />
           <PrivateRoute exact path="/profile" component={ProfileScreen} />
+          <PrivateRoute exact path="/map" component={MapScreen} />
           <AdminRoute exact path="/productlist" component={ProductListScreen} />
+          <AdminRoute
+            exact
+            path="/productlist/pageNumber/:pageNumber"
+            component={ProductListScreen}
+          />
           <AdminRoute exact path="/orderlist" component={OrderListScreen} />
+          <AdminRoute exact path="/dashboard" component={DashboadScreen} />
           <AdminRoute exact path="/userlist" component={UserListScreen} />
           <Route path="/search/name/:name?" exact component={SearchScreen} />
           <Route
@@ -198,7 +207,7 @@ function App() {
             component={SearchScreen}
           />
           <Route
-            path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order"
+            path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order/pageNumber/:pageNumber"
             exact
             component={SearchScreen}
           />

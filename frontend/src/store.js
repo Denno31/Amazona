@@ -10,6 +10,7 @@ import {
   orderListReducer,
   orderMineListReducer,
   orderPayReducer,
+  orderSummaryReducer,
 } from "./reducers/orderReducers";
 import {
   productCategoryListReducer,
@@ -23,6 +24,7 @@ import {
 import {
   updateUserProfileReducer,
   updateUserReducer,
+  userAddressMapReducer,
   userDeleteReducer,
   userDetailsReducer,
   userListReducer,
@@ -71,6 +73,8 @@ const reducer = combineReducers({
   userTopSellerList: userTopSellerListReducer,
   productCategoryList: productCategoryListReducer,
   productReviewCreate: productReviewCreateReducer,
+  userAddressMap: userAddressMapReducer,
+  orderSummary: orderSummaryReducer,
 });
 const store = createStore(
   reducer,
