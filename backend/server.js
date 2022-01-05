@@ -1,4 +1,5 @@
 import express from "express";
+import http from "http";
 import mongoose from "mongoose";
 import productRouter from "./routers/productRouter.js";
 import userRouter from "./routers/userRouter.js";
@@ -6,6 +7,7 @@ import dotenv from "dotenv";
 import orderRouter from "./routers/orderRouter.js";
 import uploadRouter from "./routers/uploadRouter.js";
 import path from "path";
+import { Server } from "socket.io";
 
 dotenv.config();
 const app = express();
@@ -43,6 +45,71 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log("server is running at port 5000");
+const httpServer = http.createServer(app);
+const io = new Server(httpServer);
+const users = [];
+
+io.on("connection", (socket) => {
+  socket.on("disconnect", () => {
+    const user = users.find((x) => x.socketId === socket.id);
+    if (user) {
+      user.online = false;
+      console.log("oflline", user.name);
+      const admin = users.find((x) => x.isAdmin && x.online);
+    }
+  });
+  socket.on("onLogin", (user) => {
+    const updateUser = {
+      ...user,
+      online: true,
+      socketId: socket.id,
+      messages: [],
+    };
+    const existUser = users.find((x) => x._id === updateUser._id);
+    if (existUser) {
+      existUser.socketId = socket.id;
+      existUser.online = true;
+    } else {
+      users.push(updateUser);
+    }
+    console.log("online", user.name);
+    const admin = users.find((x) => x.isAdmin && x.online);
+    if (admin) {
+      io.to(updatedUser.socketId).emit("listUsers", users);
+    }
+  });
+  socket.on("onUserSelected", (user) => {
+    const admin = users.find((x) => x.isAdmin && x.online);
+    if (admin) {
+      const existUser = users.find((x) => x._id === user._id);
+      io.to(admin.socketId).emit("selectUser", existUser);
+    }
+  });
+  socket.on("onMessage", (message) => {
+    if (message.isAdmin) {
+      const user = users.find((x) => x._id === message._id && x.online);
+      if (user) {
+        io.to(user.sockedId).emit("message", message);
+        user.messages.push(message);
+      } else {
+        const admin = users.find((x) => x.isAdmin && x.online);
+        if (admin) {
+          io.to(admin.socketId).emit("message", message);
+          const user = users.find((x) => x._id === message._id && x.online);
+          user.messages.push(message);
+        } else {
+          io.to(socket.id).emit("message", {
+            name: "Admin",
+            body: "Sorry. I am not online right now",
+          });
+        }
+      }
+    }
+  });
 });
+httpServer.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
+});
+// app.listen(PORT, () => {
+//   console.log("server is running at port 5000");
+// });
