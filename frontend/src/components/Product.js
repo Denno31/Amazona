@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import Rating from "./Rating";
 
 function Product({ product }) {
+  const truncateName = (name) => {
+    return name.length > 26 ? name.substr(0, 26) + "..." : name;
+  };
   return (
     <div className="card">
       <Link to={`/product/${product._id}`}>
@@ -10,7 +13,7 @@ function Product({ product }) {
       </Link>
       <div className="card-body">
         <Link to={`/product/${product._id}`}>
-          <h2>{product.name}</h2>
+          <h2>{truncateName(product.name)}</h2>
         </Link>
         <div className="rows">
           <Rating rating={product.rating} numReviews={product.numReviews} />

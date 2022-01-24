@@ -29,6 +29,8 @@ import MessageBox from "./components/MessageBox";
 import LoadingBox from "./components/LoadingBox";
 import MapScreen from "./Screens/MapScreen";
 import DashboadScreen from "./Screens/DashBoardScreen";
+import SupportScreen from "./Screens/SupportScreen";
+import ChatBox from "./components/ChatBox";
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const cart = useSelector((state) => state.cart);
@@ -133,6 +135,9 @@ function App() {
                   <li>
                     <Link to="/userlist">users</Link>
                   </li>
+                  <li>
+                    <Link to="/support">Support</Link>
+                  </li>
                 </ul>
               </div>
             )}
@@ -187,6 +192,7 @@ function App() {
           <PrivateRoute exact path="/profile" component={ProfileScreen} />
           <PrivateRoute exact path="/map" component={MapScreen} />
           <AdminRoute exact path="/productlist" component={ProductListScreen} />
+          <AdminRoute exact path="/support" component={SupportScreen} />
           <AdminRoute
             exact
             path="/productlist/pageNumber/:pageNumber"
@@ -230,7 +236,12 @@ function App() {
             component={ProductEditScreen}
           />
         </main>
-        <footer className="rows center">All rights Reserverd</footer>
+        <footer className="rows center">
+          {userInfo && !userInfo.isAdmin && (
+            <ChatBox userInfo={userInfo}></ChatBox>
+          )}
+          <div>All rights Reserverd</div>
+        </footer>
       </div>
     </BrowserRouter>
   );
